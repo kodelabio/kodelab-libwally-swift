@@ -126,6 +126,28 @@ public struct TxInput {
         return (self.scriptSig != nil && self.scriptSig!.signature != nil)
             || (self.witness != nil && !self.witness!.dummy)
     }
+    
+        /// Kodelab: Returns a multi-line string describing all stored properties
+        /// for easy debugging / logging.
+        public func dump() -> String {
+            func hex(_ data: Data?) -> String {
+                data?.map { String(format: "%02x", $0) }.joined() ?? "nil"
+            }
+
+            var out: [String] = []
+            out.append("TxInput {")
+            out.append("  transactionHash : \(hex(transaction.hash))")
+            out.append("  vout            : \(vout)")
+            out.append("  amount          : \(amount) sats")
+            out.append("  sequence        : \(sequence)")
+            out.append("  scriptPubKey    : \(scriptPubKey)")   // relies on ScriptPubKey CustomStringConvertible
+            out.append("  scriptSig       : \(scriptSig.map { "\($0.type)" } ?? "nil")")
+            out.append("  witness         : \(witness.map { "\($0.type), dummy=\($0.dummy)" } ?? "nil")")
+            out.append("  signed          : \(signed)")
+            out.append("}")
+
+            return out.joined(separator: "\n")
+        }
 }
 
 public struct Transaction {

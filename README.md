@@ -44,6 +44,8 @@ This will output an `xcframework` bundle to:
 build/LibWally.xcframework
 ```
 
+>Note: For every subsequent build, you will need to go to ~/kodelab-libwally-swift/CLibWally/libwally-core and run git clean -dfx. Otherwise you will have horrible errors that eat 4 hours of your day when you're already behind on something else. Trust me
+
 ### 4. Add to Xcode Project
 
 In the `atm-connect-ios` Xcode project:
