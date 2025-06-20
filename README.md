@@ -1,127 +1,82 @@
-# LibWally Swift [![Build Status](https://travis-ci.com/Sjors/libwally-swift.svg?branch=master)](https://travis-ci.com/Sjors/libwally-swift)
+# LibWally Swift (Kodelab Fork)
 
-Opinionated Swift wrapper around [LibWally](https://github.com/ElementsProject/libwally-core),
-a collection of useful primitives for cryptocurrency wallets.
+LibWally is a portable C library for Bitcoin-related operations, maintained by Blockstream. It provides low-level functionality for working with keys, addresses, transactions, PSBTs, scripts, and more — forming the foundation for secure wallet software.
 
-Supports a minimal set of features based on v0.8.8. See also [original docs](https://wally.readthedocs.io/en/release_0.8.8).
+This repository contains the source for **LibWally-Swift**, a Swift wrapper that exposes core `libwally-core` functionality to Swift-based applications.
 
-- [ ] Core Functions
-  - [x] base58 encode / decode
-- [ ] Crypto Functions
-  - [x] sign ECDSA, convert to DER
-- [ ] Address Functions
-  - [x] Parse to scriptPubKey
-  - [ ] Generate from scriptPubKey #7 (wishlist, done for SegWit)
-  - [x] Derive
-  - [x] WIF
-  - [ ] Detect bech32 typos #4 (wishlist)
-  - [x] bech32 and bech32m
-- [x] BIP32 Functions
-  - [ ] Derive scriptPubKey #6 (wishlist)
-- [ ] BIP38 Functions
-- [x] BIP39 Functions
-- [ ] Descriptor functions
-  - [x] Parse and canonicalize
-  - [x] Convert to address
-  - [ ] Convert to scriptPubKey
-- [ ] Script Functions
-  - [x] Serialize scriptPubKey
-  - [x] Determine scriptPubkey type
-- [ ] PSBT functions
-  - [x] Parse and serialize (base64 / binary)
-  - [x] Check completeness and extract transaction
-- [ ] Transaction Functions
-  - [x] Compose and sign transaction
-  - [x] Calculate fee
+## This Fork
 
-Items marked with wishlist are not (yet) available upstream.
+This fork is maintained by **Kodelab** to support the ATM Connect iOS app ([view repo](https://github.com/kodelabio/atm-connect-ios)). It includes custom changes tailored to our needs.
 
-Multisig as well as [Elements](https://blockstream.com/elements/) specific functions such as confidential addresses are not implemented.
+We vendor the full source of `libwally-core` and manually manage framework builds. **Xcode should not be used to build `libwally-core` directly** - unlike how the upstream does it — we instead generate a prebuilt `.xcframework` via shell scripts and include that in the app manually.
 
-Works with iOs 11+ on 64-bit devices and the simulator.
+---
 
-## Usage
+## Build & Install 
 
-Derive address from a seed:
+These instructions are for development and integration into `atm-connect-ios`.
 
-```swift
-let mnemonic = BIP39Mnemonic("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about")
-let masterKey = HDKey(mnemonic.seedHex("bip39 passphrase"))!
-masterKey.fingerprint.hexString
-let path = "m/44'/0'/0'"
-let account = try! masterKey.derive(path)
-account.xpub
-account.address(.payToWitnessPubKeyHash)
-```
-
-Derive address from an xpub:
-
-```swift
-let account = HDKey("xpub6ASuArnXKPbfEwhqN6e3mwBcDTgzisQN1wXN9BJcM47sSikHjJf3UFHKkNAWbWMiGj7Wf5uMash7SyYq527Hqck2AxYysAA7xmALppuCkwQ")
-let receivePath = "0/0"
-key = account.derive(receivePath)
-key.address(.payToPubKeyHash) # => 1JQheacLPdM5ySCkrZkV66G2ApAXe1mqLj
-```
-
-Parse an address:
-
-```swift
-var address = Address("bc1q6zwjfmhdl4pvhvfpv8pchvtanlar8hrhqdyv0t")
-address?.scriptPubKey # => 0014d09d24eeedfd42cbb12161c38bb17d9ffa33dc77
-address?.scriptPubKey.type # => .payToWitnessPubKeyHash
-```
-
-Create and sign a transaction:
-
-```swift
-let txId = "400b52dab0a2bb5ce5fdf5405a965394b43a171828cd65d35ffe1eaa0a79a5c4"
-let vout: UInt32 = 1
-let amount: Satoshi = 10000
-let witness = Witness(.payToWitnessPubKeyHash(key.pubKey))
-let input = TxInput(Transaction(txId)!, vout, amount, nil, witness, scriptPubKey)!
-transaction = Transaction([input], [TxOutput(destinationAddress.scriptPubKey, amount - 110)])
-transaction.feeRate // Satoshi per byte
-let accountPriv = HDKey("xpriv...")
-let privKey = try! accountPriv.derive("0/0")
-transaction.sign([privKey])
-transaction.description # transaction hex
-```
-
-See also the included [Playground](/DemoPlayground.playground/Contents.swift) and [tests](/LibWallyTests).
-
-## Install
-
-As part of a project.
-
-### CocoaPods
-
-Add to your Podfile:
-```
-pod 'LibWally', :git => 'https://github.com/Sjors/LibWally-Swift.git', :tag => 'v0.0.3', :submodules => true
-```
-
-and then run:
-```
-pod install --verbose
-```
-
-## Build
-
-For development.
-
-Install dependencies:
+### 1. Install Dependencies
 
 ```sh
 brew install gnu-sed automake libtool
 ```
 
-Clone the repository, including submodules:
+### 2. Clone the Repo
 
-```sh
-git clone https://github.com/Sjors/libwally-swift.git --recurse-submodules
+```
+git clone https://github.com/kodelabio/kodelab-libwally-swift.git --recurse-submodules
+cd kodelab-libwally-swift
 ```
 
-Xcode will build libwally-core for you, which may take a few minutes.
+### 3. Build the Framework
 
-When making changes to libwally-core, keep in mind that cleaning the build folder
-in Xcode [will not trigger a recompile](https://github.com/Sjors/libwally-swift/pull/82#issuecomment-1327837562). You need to call `git clean -dfx` inside `CLibWally/libwally-core`.
+Use chmod to make the build script executable, and then run it:
+
+```
+chmod +x build-libwally-swift.sh
+./build-libwally-swift.sh
+```
+
+This will output an `xcframework` bundle to:
+
+```
+build/LibWally.xcframework
+```
+
+### 4. Add to Xcode Project
+
+In the `atm-connect-ios` Xcode project:
+
+- Locate the `Frameworks` group in the project navigator (note: this is a logical group, not a real folder on disk).
+- Delete the existing `LibWally.xcframework` from the `Frameworks` group.
+- Drag the new `LibWally.xcframework` from the `build/` folder into the `Frameworks` group in Xcode.
+
+### 5. Final Setup
+
+For each target that needs access to `LibWally`:
+
+- Select the project in the navigator, then select the target directly
+- Go to the **"General"** tab
+- Scroll to **"Frameworks, Libraries, and Embedded Content"**
+- Ensure `LibWally.xcframework` is listed and set to **Embed & Sign**
+
+
+---
+
+## Notes
+
+Complete this full process each time there are changes to LibWally. 
+Do not rely on xcode to build for you.
+
+---
+
+## Upstream Sync
+
+We maintain a `vendor` branch to track upstream changes from [`libwally-core`](https://github.com/Sjors/libwally-swift). Our `main` and `dev` branches contain internal Kodelab modifications and Swift integration logic.
+
+Use Git tags to mark upstream syncs. For now, `vendor-upstream-v0.0.9` is the initial base version. 
+
+Internal tags look normal, eg: `1.0.0`, `v1.0.0`, etc.
+
+---
