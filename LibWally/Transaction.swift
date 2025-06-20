@@ -126,28 +126,31 @@ public struct TxInput {
         return (self.scriptSig != nil && self.scriptSig!.signature != nil)
             || (self.witness != nil && !self.witness!.dummy)
     }
-    
-        /// Kodelab: Returns a multi-line string describing all stored properties
-        /// for easy debugging / logging.
-        public func dump() -> String {
-            func hex(_ data: Data?) -> String {
-                data?.map { String(format: "%02x", $0) }.joined() ?? "nil"
-            }
 
-            var out: [String] = []
-            out.append("TxInput {")
-            out.append("  transactionHash : \(hex(transaction.hash))")
-            out.append("  vout            : \(vout)")
-            out.append("  amount          : \(amount) sats")
-            out.append("  sequence        : \(sequence)")
-            out.append("  scriptPubKey    : \(scriptPubKey)")   // relies on ScriptPubKey CustomStringConvertible
-            out.append("  scriptSig       : \(scriptSig.map { "\($0.type)" } ?? "nil")")
-            out.append("  witness         : \(witness.map { "\($0.type), dummy=\($0.dummy)" } ?? "nil")")
-            out.append("  signed          : \(signed)")
-            out.append("}")
-
-            return out.joined(separator: "\n")
+    /// Kodelab: Returns a multi-line string describing all stored properties
+    /// for easy debugging / logging.
+    public func dump() -> String {
+        func hex(_ data: Data?) -> String {
+            data?.map { String(format: "%02x", $0) }.joined() ?? "nil"
         }
+
+        var out: [String] = []
+        out.append("TxInput {")
+        out.append("  transactionHash : \(hex(transaction.hash))")
+        out.append("  vout            : \(vout)")
+        out.append("  amount          : \(amount) sats")
+        out.append("  sequence        : \(sequence)")
+        out.append("  scriptPubKey    : \(scriptPubKey)")  // relies on ScriptPubKey CustomStringConvertible
+        out.append(
+            "  scriptSig       : \(scriptSig.map { "\($0.type)" } ?? "nil")")
+        out.append(
+            "  witness         : \(witness.map { "\($0.type), dummy=\($0.dummy)" } ?? "nil")"
+        )
+        out.append("  signed          : \(signed)")
+        out.append("}")
+
+        return out.joined(separator: "\n")
+    }
 }
 
 public struct Transaction {
@@ -165,20 +168,30 @@ public struct Transaction {
 
     public init?(_ description: String) {
         if let hex = Data(description) {
-            if hex.count != SHA256_LEN {  // Not a transaction hash
-                let tx_bytes = UnsafeMutablePointer<UInt8>.allocate(
+            if hex.count != SHA256_LEN {
+                let txBytes = UnsafeMutablePointer<UInt8>.allocate(
                     capacity: hex.count)
-                hex.copyBytes(to: tx_bytes, count: hex.count)
-                defer {
-                    tx_bytes.deallocate()
-                }
-                if wally_tx_from_bytes(
-                    tx_bytes, hex.count, UInt32(WALLY_TX_FLAG_USE_WITNESS),
-                    &self.wally_tx) == WALLY_OK
-                {
-                    precondition(self.wally_tx != nil)
-                    return
-                }
+                hex.copyBytes(to: txBytes, count: hex.count)
+                defer { txBytes.deallocate() }
+
+                guard
+                    wally_tx_from_bytes(
+                        txBytes,
+                        hex.count,
+                        UInt32(WALLY_TX_FLAG_USE_WITNESS),
+                        &self.wally_tx) == WALLY_OK
+                else { return nil }
+
+                precondition(self.wally_tx != nil)
+
+                /// Kodelab: compute & cache the txid
+                var le = [UInt8](repeating: 0, count: Int(WALLY_TXHASH_LEN))  // 32
+                precondition(
+                    wally_tx_get_txid(self.wally_tx, &le, le.count) == WALLY_OK)
+
+                self.hash = Data(le)
+
+                return
             }
             if hex.count == SHA256_LEN {  // 32 bytes, but not a valid transaction, so treat as a hash
                 self.hash = Data(hex.reversed())
