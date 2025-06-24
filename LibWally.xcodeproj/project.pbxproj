@@ -22,6 +22,9 @@
 		F605DB962E0AA63500224C6F /* RIPEMD160+Hash.swift in Sources */ = {isa = PBXBuildFile; fileRef = F605DB952E0AA62E00224C6F /* RIPEMD160+Hash.swift */; };
 		F605DB982E0AA6FD00224C6F /* HDKey+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F605DB972E0AA6F800224C6F /* HDKey+Extensions.swift */; };
 		F605DBA12E0AAF5600224C6F /* UTXO.swift in Sources */ = {isa = PBXBuildFile; fileRef = F605DBA02E0AAF5500224C6F /* UTXO.swift */; };
+		F605DBA32E0AB73900224C6F /* TransactionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F605DBA22E0AB70A00224C6F /* TransactionBuilder.swift */; };
+		F605DBA52E0ABD2200224C6F /* TransactionBuilder+Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F605DBA42E0ABD1C00224C6F /* TransactionBuilder+Factory.swift */; };
+		F605DBAE2E0AC0FF00224C6F /* Base58.swift in Sources */ = {isa = PBXBuildFile; fileRef = F605DBAD2E0AC0FF00224C6F /* Base58.swift */; };
 		FE120F55229C3B6900E7720C /* BIP39.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE120F54229C3B6900E7720C /* BIP39.swift */; };
 		FE1A3C0622B395B300EDCB58 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1A3C0522B395B300EDCB58 /* Address.swift */; };
 		FE39CDFA229DAAF400DD135E /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE39CDF9229DAAF400DD135E /* DataExtension.swift */; };
@@ -70,6 +73,9 @@
 		F605DB952E0AA62E00224C6F /* RIPEMD160+Hash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RIPEMD160+Hash.swift"; sourceTree = "<group>"; };
 		F605DB972E0AA6F800224C6F /* HDKey+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HDKey+Extensions.swift"; sourceTree = "<group>"; };
 		F605DBA02E0AAF5500224C6F /* UTXO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UTXO.swift; sourceTree = "<group>"; };
+		F605DBA22E0AB70A00224C6F /* TransactionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionBuilder.swift; sourceTree = "<group>"; };
+		F605DBA42E0ABD1C00224C6F /* TransactionBuilder+Factory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionBuilder+Factory.swift"; sourceTree = "<group>"; };
+		F605DBAD2E0AC0FF00224C6F /* Base58.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base58.swift; sourceTree = "<group>"; };
 		FE120F54229C3B6900E7720C /* BIP39.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BIP39.swift; sourceTree = "<group>"; };
 		FE1A3C0522B395B300EDCB58 /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
 		FE39CDF5229D534100DD135E /* DemoPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = DemoPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -118,6 +124,9 @@
 		F605DB902E0AA54200224C6F /* Kodelab */ = {
 			isa = PBXGroup;
 			children = (
+				F605DBAD2E0AC0FF00224C6F /* Base58.swift */,
+				F605DBA42E0ABD1C00224C6F /* TransactionBuilder+Factory.swift */,
+				F605DBA22E0AB70A00224C6F /* TransactionBuilder.swift */,
 				F605DBA02E0AAF5500224C6F /* UTXO.swift */,
 				F605DB972E0AA6F800224C6F /* HDKey+Extensions.swift */,
 				F605DB952E0AA62E00224C6F /* RIPEMD160+Hash.swift */,
@@ -329,9 +338,12 @@
 			files = (
 				F605DB942E0AA5DC00224C6F /* RIPEMD160.swift in Sources */,
 				FE120F55229C3B6900E7720C /* BIP39.swift in Sources */,
+				F605DBA32E0AB73900224C6F /* TransactionBuilder.swift in Sources */,
 				A2BCE19423A7D6B200737BEB /* PSBT.swift in Sources */,
+				F605DBA52E0ABD2200224C6F /* TransactionBuilder+Factory.swift in Sources */,
 				A21016BD279EE9D00002330E /* Descriptor.swift in Sources */,
 				F605DB962E0AA63500224C6F /* RIPEMD160+Hash.swift in Sources */,
+				F605DBAE2E0AC0FF00224C6F /* Base58.swift in Sources */,
 				FE39CDFA229DAAF400DD135E /* DataExtension.swift in Sources */,
 				FE1A3C0622B395B300EDCB58 /* Address.swift in Sources */,
 				FE8B80A422B3E5630041CC94 /* Script.swift in Sources */,

@@ -8,20 +8,104 @@
 
 import Foundation
 
-/// Minimal UTXO model used by the selection engine.
-public struct UTXO: Equatable {
-    public let txid: String  // big-endian hex
-    public let vout: UInt32  // output index
-    public let value: UInt64  // satoshis
+/// A **spendable output** belonging to the wallet.
+///
+/// This minimal model is used by the input-selection engine and the
+/// high-level `TransactionBuilder`.
+/// It contains only the data strictly required for fee calculation,
+/// signing and change computation.
+///
+/// Conforms to:
+/// • `Equatable`
+/// • `Decodable` – so you can decode it directly from Blockbook /
+///   QuickNode JSON replies.
+///
+/// Extra fields that indexers may include (e.g. `confirmations`,
+/// `height`) are intentionally ignored; extend the struct if you need
+/// them elsewhere.
+public struct UTXO: Equatable, Decodable {
+
+    /// Transaction ID (big-endian hex string).
+    public let txid: String
+
+    /// Zero-based output index within the transaction.
+    public let vout: UInt32
+
+    /// Value of the output in satoshis.
+    public let value: UInt64
+
+    /// The locking script of the output.
     public let scriptPubKey: ScriptPubKey
 
+    // --------------------------------------------------------------------
+    // Manual initializer – handy for unit tests or other data sources.
+    // --------------------------------------------------------------------
     public init(
-        txid: String, vout: UInt32, value: UInt64, scriptPubKey: ScriptPubKey
+        txid: String,
+        vout: UInt32,
+        value: UInt64,
+        scriptPubKey: ScriptPubKey
     ) {
         self.txid = txid
         self.vout = vout
         self.value = value
         self.scriptPubKey = scriptPubKey
+    }
+
+    // --------------------------------------------------------------------
+    // Custom Decodable implementation
+    // --------------------------------------------------------------------
+    private enum CodingKeys: String, CodingKey {
+        case txid, vout, value, scriptPubKey
+    }
+    private enum SPKObjectKeys: String, CodingKey { case hex }
+
+    public init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+
+        txid = try c.decode(String.self, forKey: .txid)
+        vout = try c.decode(UInt32.self, forKey: .vout)
+
+        // "value" may be an integer or a numeric string
+        if let sats = try? c.decode(UInt64.self, forKey: .value) {
+            value = sats
+        } else {
+            let str = try c.decode(String.self, forKey: .value)
+            guard let sats = UInt64(str) else {
+                throw DecodingError.dataCorruptedError(
+                    forKey: .value,
+                    in: c,
+                    debugDescription:
+                        "value should be sats as UInt64 or numeric string"
+                )
+            }
+            value = sats
+        }
+
+        // scriptPubKey can be a plain hex string or nested { "hex": "<hex>" }
+        if let hex = try? c.decode(String.self, forKey: .scriptPubKey) {
+            guard let spk = ScriptPubKey(hex) else {
+                throw DecodingError.dataCorruptedError(
+                    forKey: .scriptPubKey,
+                    in: c,
+                    debugDescription: "invalid scriptPubKey hex"
+                )
+            }
+            scriptPubKey = spk
+        } else {
+            let spkObj = try c.nestedContainer(
+                keyedBy: SPKObjectKeys.self,
+                forKey: .scriptPubKey)
+            let hex = try spkObj.decode(String.self, forKey: .hex)
+            guard let spk = ScriptPubKey(hex) else {
+                throw DecodingError.dataCorruptedError(
+                    forKey: .scriptPubKey,
+                    in: c,
+                    debugDescription: "invalid scriptPubKey.hex"
+                )
+            }
+            scriptPubKey = spk
+        }
     }
 }
 
@@ -68,13 +152,13 @@ public enum UTXOSelector {
         targetAmount: UInt64,
         feeRateInSatsPerVByte: UInt64,
         sizeModel: VSizeModel = .p2wpkh
-    ) throws -> (selectedUTXOs: [UTXO], changeAmount: UInt64, feeAmount: UInt64) {
+    ) throws -> (selectedUTXOs: [UTXO], changeAmount: UInt64, feeAmount: UInt64)
+    {
 
         func estimateFee(vInputCount: Int, vOutputCount: Int) -> UInt64 {
             let totalVBytes =
-                UInt64(vInputCount) * sizeModel.input +
-                UInt64(vOutputCount) * sizeModel.output +
-                sizeModel.txOverhead
+                UInt64(vInputCount) * sizeModel.input + UInt64(vOutputCount)
+                * sizeModel.output + sizeModel.txOverhead
             return totalVBytes * feeRateInSatsPerVByte
         }
 
@@ -92,7 +176,8 @@ public enum UTXOSelector {
             )
 
             if accumulatedValue >= targetAmount + estimatedFee {
-                let changeAmount = accumulatedValue - targetAmount - estimatedFee
+                let changeAmount =
+                    accumulatedValue - targetAmount - estimatedFee
                 return (selectedUTXOs, changeAmount, estimatedFee)
             }
         }
