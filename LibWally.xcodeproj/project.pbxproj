@@ -9,12 +9,18 @@
 /* Begin PBXBuildFile section */
 		75F6BED1281F6F680072D4DE /* libsecp256k1 in Frameworks */ = {isa = PBXBuildFile; fileRef = 75F6BED0281F6F650072D4DE /* libsecp256k1 */; };
 		75F6BED2281F6F680072D4DE /* LibWallyCore in Frameworks */ = {isa = PBXBuildFile; fileRef = 75F6BECF281F6F650072D4DE /* LibWallyCore */; };
+		A21016BD279EE9D00002330E /* Descriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21016BC279EE9D00002330E /* Descriptor.swift */; };
+		A21016BF279EEFBD0002330E /* DescriptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21016BE279EEFBD0002330E /* DescriptorTests.swift */; };
 		A232260122B94A6B00C3B79C /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A232260022B94A6B00C3B79C /* Transaction.swift */; };
 		A232260322B94A8400C3B79C /* TransactionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A232260222B94A8400C3B79C /* TransactionTests.swift */; };
 		A23509D72398F33E0045D3A5 /* DataExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A23509D62398F33E0045D3A5 /* DataExtensionTests.swift */; };
 		A2BCE19223A7D28500737BEB /* PSBTTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BCE19123A7D28500737BEB /* PSBTTests.swift */; };
 		A2BCE19423A7D6B200737BEB /* PSBT.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BCE19323A7D6B200737BEB /* PSBT.swift */; };
 		A2F7489522C6D02B00EF11C8 /* LibWally.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9CD3B4229C397900345DFA /* LibWally.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F605DB922E0AA55600224C6F /* CryptoHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F605DB912E0AA54E00224C6F /* CryptoHelpers.swift */; };
+		F605DB942E0AA5DC00224C6F /* RIPEMD160.swift in Sources */ = {isa = PBXBuildFile; fileRef = F605DB932E0AA5D600224C6F /* RIPEMD160.swift */; };
+		F605DB962E0AA63500224C6F /* RIPEMD160+Hash.swift in Sources */ = {isa = PBXBuildFile; fileRef = F605DB952E0AA62E00224C6F /* RIPEMD160+Hash.swift */; };
+		F605DB982E0AA6FD00224C6F /* HDKey+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F605DB972E0AA6F800224C6F /* HDKey+Extensions.swift */; };
 		FE120F55229C3B6900E7720C /* BIP39.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE120F54229C3B6900E7720C /* BIP39.swift */; };
 		FE1A3C0622B395B300EDCB58 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1A3C0522B395B300EDCB58 /* Address.swift */; };
 		FE39CDFA229DAAF400DD135E /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE39CDF9229DAAF400DD135E /* DataExtension.swift */; };
@@ -25,8 +31,6 @@
 		FE9CD3C0229C397900345DFA /* BIP39Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE9CD3BF229C397900345DFA /* BIP39Tests.swift */; };
 		FEC79CE4229E7F3800D86E2E /* BIP32.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEC79CE3229E7F3800D86E2E /* BIP32.swift */; };
 		FEC79CE6229E807500D86E2E /* BIP32Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEC79CE5229E807500D86E2E /* BIP32Tests.swift */; };
-		A21016BD279EE9D00002330E /* Descriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21016BC279EE9D00002330E /* Descriptor.swift */; };
-		A21016BF279EEFBD0002330E /* DescriptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21016BE279EEFBD0002330E /* DescriptorTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,11 +57,17 @@
 		A20557A522C6CDBE007221AA /* LibWally.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = LibWally.modulemap; sourceTree = "<group>"; };
 		A20C942422C6BC3900B0D206 /* libwallycore.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libwallycore.a; path = "CLibWally/libwally-core/src/.libs/libwallycore.a"; sourceTree = "<group>"; };
 		A20C942622C6BDB000B0D206 /* CLibWally */ = {isa = PBXFileReference; lastKnownFileType = folder; path = CLibWally; sourceTree = "<group>"; };
+		A21016BC279EE9D00002330E /* Descriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Descriptor.swift; sourceTree = "<group>"; };
+		A21016BE279EEFBD0002330E /* DescriptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptorTests.swift; sourceTree = "<group>"; };
 		A232260022B94A6B00C3B79C /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		A232260222B94A8400C3B79C /* TransactionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTests.swift; sourceTree = "<group>"; };
 		A23509D62398F33E0045D3A5 /* DataExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExtensionTests.swift; sourceTree = "<group>"; };
 		A2BCE19123A7D28500737BEB /* PSBTTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSBTTests.swift; sourceTree = "<group>"; };
 		A2BCE19323A7D6B200737BEB /* PSBT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSBT.swift; sourceTree = "<group>"; };
+		F605DB912E0AA54E00224C6F /* CryptoHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoHelpers.swift; sourceTree = "<group>"; };
+		F605DB932E0AA5D600224C6F /* RIPEMD160.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RIPEMD160.swift; sourceTree = "<group>"; };
+		F605DB952E0AA62E00224C6F /* RIPEMD160+Hash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RIPEMD160+Hash.swift"; sourceTree = "<group>"; };
+		F605DB972E0AA6F800224C6F /* HDKey+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HDKey+Extensions.swift"; sourceTree = "<group>"; };
 		FE120F54229C3B6900E7720C /* BIP39.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BIP39.swift; sourceTree = "<group>"; };
 		FE1A3C0522B395B300EDCB58 /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
 		FE39CDF5229D534100DD135E /* DemoPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = DemoPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -73,8 +83,6 @@
 		FE9CD3C1229C397900345DFA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FEC79CE3229E7F3800D86E2E /* BIP32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BIP32.swift; sourceTree = "<group>"; };
 		FEC79CE5229E807500D86E2E /* BIP32Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BIP32Tests.swift; sourceTree = "<group>"; };
-		A21016BC279EE9D00002330E /* Descriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Descriptor.swift; sourceTree = "<group>"; };
-		A21016BE279EEFBD0002330E /* DescriptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptorTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +113,17 @@
 			path = LibWallyCore;
 			sourceTree = "<group>";
 		};
+		F605DB902E0AA54200224C6F /* Kodelab */ = {
+			isa = PBXGroup;
+			children = (
+				F605DB972E0AA6F800224C6F /* HDKey+Extensions.swift */,
+				F605DB952E0AA62E00224C6F /* RIPEMD160+Hash.swift */,
+				F605DB932E0AA5D600224C6F /* RIPEMD160.swift */,
+				F605DB912E0AA54E00224C6F /* CryptoHelpers.swift */,
+			);
+			path = Kodelab;
+			sourceTree = "<group>";
+		};
 		FE9CD3A7229C397900345DFA = {
 			isa = PBXGroup;
 			children = (
@@ -130,6 +149,7 @@
 		FE9CD3B3229C397900345DFA /* LibWally */ = {
 			isa = PBXGroup;
 			children = (
+				F605DB902E0AA54200224C6F /* Kodelab */,
 				A20557A522C6CDBE007221AA /* LibWally.modulemap */,
 				FE9CD3B4229C397900345DFA /* LibWally.h */,
 				FE9CD3B5229C397900345DFA /* Info.plist */,
@@ -287,7 +307,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A21016C1279F03E20002330E /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,14 +324,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F605DB942E0AA5DC00224C6F /* RIPEMD160.swift in Sources */,
 				FE120F55229C3B6900E7720C /* BIP39.swift in Sources */,
 				A2BCE19423A7D6B200737BEB /* PSBT.swift in Sources */,
 				A21016BD279EE9D00002330E /* Descriptor.swift in Sources */,
+				F605DB962E0AA63500224C6F /* RIPEMD160+Hash.swift in Sources */,
 				FE39CDFA229DAAF400DD135E /* DataExtension.swift in Sources */,
 				FE1A3C0622B395B300EDCB58 /* Address.swift in Sources */,
 				FE8B80A422B3E5630041CC94 /* Script.swift in Sources */,
 				FEC79CE4229E7F3800D86E2E /* BIP32.swift in Sources */,
+				F605DB982E0AA6FD00224C6F /* HDKey+Extensions.swift in Sources */,
 				A232260122B94A6B00C3B79C /* Transaction.swift in Sources */,
+				F605DB922E0AA55600224C6F /* CryptoHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -520,7 +543,7 @@
 				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = LibWally/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -562,7 +585,7 @@
 				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = LibWally/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
